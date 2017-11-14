@@ -72,7 +72,7 @@ $(document).ready(function(){
                 url: './update_currency/'+currency,
                 data: "",
                 success: function(response) {
-                    console.log(response);
+                    //console.log(response);
                     
                     if(response == 'Success')
                     {

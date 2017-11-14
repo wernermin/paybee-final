@@ -19,7 +19,7 @@ class ApiController extends Controller
     
     public function updates(){
         
-        
+        //this will work better with webhooks
         //save user requests to table
         //get last request user entry 
         //check if last response is = this user newest response
@@ -72,20 +72,13 @@ class ApiController extends Controller
             //print_r($request);
         }
         
-        
-        
-        
-       // print $latest_text;
         return $latest_text;
-       
-       // $request = collect(end($response));
-       // $text = $request['message']['text'];
         
     }
     
     
     public function respond($text = false, $currency = false, $amount = false){
-        
+        //send response to user telegram
         $telegram = new Api(env('TELEGRAM_BOT_TOKEN'));
         $user = Auth::user();
         
@@ -115,21 +108,7 @@ class ApiController extends Controller
         {
             $amount = 1;
         }
-        
-        
-        //$response = $telegram->getUpdates();
-        //$request = collect(end($response));
-        
-        //loop through updates and get last request for this user to send to correct channel
-        
-        //$telegram_id = $request['message']['from']['id'];
-        //$chatid = $request['message']['chat']['id'];
-        //$text = $request['message']['text'];
-        /*
-        print "<pre>";
-        print_r($request);
-        print "</pre>";
-        die();*/
+      
         switch($text) {
             case '/start':
                 $this->showMenu($telegram, $chatid);
@@ -153,23 +132,11 @@ class ApiController extends Controller
     }
     
     public function linkAccount($telegram, $chatid, $telegram_id){
-        
+        //link user paybee account with telegram account
         $user = Auth::user();
         $userid = Auth::user()->id;
         
-        //save the user account id
-        
         $actiont = "";
-        
-        //if($userid->lesson_id != "")
-        //{
-            //update
-          //  $lesson = Lesson::find($request->lesson_id);
-            //$actiont = "update";
-       // }
-        //else
-        //{
-            //create new
         
         $user_telegram = $user->userTelegramId;
         if($user_telegram)
@@ -182,8 +149,7 @@ class ApiController extends Controller
         else
         {
             $userTelegramId = new UserTelegramId();
-            //}
-
+      
             $userTelegramId->user_id = $userid;
             $userTelegramId->telegram_id = $telegram_id;
             $userTelegramId->chat_id = $chatid;
@@ -215,23 +181,15 @@ class ApiController extends Controller
    
     
     public function getBTC($telegram, $chatid, $cur = false, $amount = false){
+        
+        //get currency conversion
         $message = '';
-        
-        //get user default currency here
-        
-        
-        
         
         if($cur == false)
         {
-            //get user default currency here
-            
             $cur = "USD";
         }
         
-        
-        
-       
         $btc = $this->getCurl($cur, $amount);
         
         $message = $btc;
@@ -243,7 +201,7 @@ class ApiController extends Controller
     }
     
     public function getUserID($telegram, $chatid){
-        
+        //send paybee userid to user telegram
         $userid = Auth::user()->id;
         
         $response = $telegram->sendMessage([
@@ -255,20 +213,8 @@ class ApiController extends Controller
     public function getCURL($cur, $amount)
     {
         //https://telegram.me/wpaybee_bot
+        //$url = "https://api.coindesk.com/v1/bpi/supported-currencies.json";
         
-        //get all currencies
-        
-        
-        //check if currency is valid
-        
-        /*
-        $url = "https://api.coindesk.com/v1/bpi/supported-currencies.json";
-        
-        $reponse = "";
-        
-       
-        
-        */
         $message = "";
         $url = "https://api.coindesk.com/v1/bpi/currentprice/".$cur.".json";
         
@@ -351,46 +297,6 @@ class ApiController extends Controller
     }
     */
     
-    ///getBTCEquivalent 30 USD
-    
-    //https://api.coindesk.com/v1/bpi/supported-currencies.json
-    
-    /*
-     * CURL Post Request:
-
-        public function getCURL()
-        {
-            $response = Curl::to('https://example.com/posts')
-                        ->withData(['title'=>'Test', 'body'=>'sdsd', 'userId'=>1])
-                        ->post();
-            dd($response);
-        }
-        CURL Put Request:
-
-        public function getCURL()
-        {
-            $response = Curl::to('https://example.com/posts/1')
-                        ->withData(['title'=>'Test', 'body'=>'sdsd', 'userId'=>1])
-                        ->put();
-            dd($response);
-        }
-        CURL Patch Request:
-
-        public function getCURL()
-        {
-            $response = Curl::to('https://example.com/posts/1')
-                        ->withData(['title'=>'Test', 'body'=>'sdsd', 'userId'=>1])
-                        ->patch();
-            dd($response);
-        }
-        CURL Delete Request:
-
-        public function getCURL()
-        {
-            $response = Curl::to('https://example.com/posts/1')
-                        ->delete();
-            dd($response);
-        }
-     */
+   
     
 }

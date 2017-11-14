@@ -113,7 +113,7 @@
                 url: './respond/linkAccount',
                 data: "",
                 success: function() {
-                    console.log("link success");
+                   // console.log("link success");
                     location.reload();
                 }
             });
@@ -129,7 +129,7 @@
                 success: function(responsedata) {
                     
                     responsedata = responsedata.substring(1);
-                    console.log(responsedata);
+                    //console.log(responsedata);
                     
                     var grtext = $("#getRequest").text();
                     
@@ -227,7 +227,7 @@
                         url: './respond/getUserID',
                         data: "",
                         success: function() {
-                            console.log("get user id success");
+                            //console.log("get user id success");
 
 
                         }
@@ -254,7 +254,7 @@
                         url: './respond/getBTC/'+code+'/'+amount,
                         data: "",
                         success: function() {
-                            console.log("get btc success");
+                            //console.log("get btc success");
                         }
                     });
                 }
